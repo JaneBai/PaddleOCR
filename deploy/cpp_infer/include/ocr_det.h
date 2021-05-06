@@ -73,6 +73,10 @@ public:
   // Run predictor
   void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes);
 
+public:
+	double det_db_thresh_ = 0.3;
+	double det_db_box_thresh_ = 0.5;
+    double det_db_unclip_ratio_ = 2.0;
 private:
   std::shared_ptr<Predictor> predictor_;
 
@@ -84,9 +88,8 @@ private:
 
   int max_side_len_ = 960;
 
-  double det_db_thresh_ = 0.3;
-  double det_db_box_thresh_ = 0.5;
-  double det_db_unclip_ratio_ = 2.0;
+ 
+  
   bool use_polygon_score_ = false;
 
   bool visualize_ = true;

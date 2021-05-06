@@ -48,7 +48,7 @@ def parse_args():
     parser.add_argument("--det_db_unclip_ratio", type=float, default=2.0)
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=bool, default=False)
-    parser.add_argument("--det_db_score_mode", type=str, default="fast")
+    parser.add_argument("--det_db_score_mode", type=str, default="fast")##弯曲样本时，设置为"slow"
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)

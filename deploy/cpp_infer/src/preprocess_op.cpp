@@ -67,6 +67,7 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   float ratio = 1.f;
   int max_wh = w >= h ? w : h;
+  //长边不超过960时，按原图输入，然后微调到32的倍数;若超过960，则长边resize到960的倍数
   if (max_wh > max_size_len) {
     if (h > w) {
       ratio = float(max_size_len) / float(h);
@@ -100,7 +101,7 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
   imgH = rec_image_shape[1];
   imgW = rec_image_shape[2];
 
-  imgW = int(32 * wh_ratio);
+  imgW = int(32 * wh_ratio);//wh_ratio:长宽比
 
   float ratio = float(img.cols) / float(img.rows);
   int resize_w, resize_h;

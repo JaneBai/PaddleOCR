@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/ocr_det.h>
+#include "opencv2/opencv.hpp"
 
 namespace PaddleOCR {
 
@@ -101,6 +102,11 @@ void DBDetector::Run(cv::Mat &img,
 
   cv::Mat cbuf_map(n2, n3, CV_8UC1, (unsigned char *)cbuf.data());
   cv::Mat pred_map(n2, n3, CV_32F, (float *)pred.data());
+  //
+  //cv::imshow("cbuf_map", cbuf_map);
+  //cvWaitKey(0);
+  //cv::imshow("pred_map", pred_map);
+  //cvWaitKey(0);
 
   const double threshold = this->det_db_thresh_ * 255;
   const double maxvalue = 255;
@@ -109,6 +115,7 @@ void DBDetector::Run(cv::Mat &img,
   cv::Mat dilation_map;
   cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
   cv::dilate(bit_map, dilation_map, dila_ele);
+  //dilation_map = bit_map;
   boxes = post_processor_.BoxesFromBitmap(
       pred_map, dilation_map, this->det_db_box_thresh_,
       this->det_db_unclip_ratio_, this->use_polygon_score_);

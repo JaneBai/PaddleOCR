@@ -7,6 +7,9 @@
     <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\main--备份.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
