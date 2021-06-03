@@ -84,20 +84,20 @@ def main():
 
     model.eval()
     with open(save_res_path, "wb") as fout:
-        for file in get_image_file_list(config['Global']['infer_img']):
+        for file in get_image_file_list(config['Global']['infer_img']):  #从配置文件读取图片路径列表
             logger.info("infer_img: {}".format(file))
             with open(file, 'rb') as f:
                 img = f.read()
                 data = {'image': img}
-            batch = transform(data, ops)
+            batch = transform(data, ops)    #预处理方法
 
             images = np.expand_dims(batch[0], axis=0)
             shape_list = np.expand_dims(batch[1], axis=0)
-            images = paddle.to_tensor(images)
-            preds = model(images)
-            post_result = post_process_class(preds, shape_list)
+            images = paddle.to_tensor(images)     #飞桨框架的张量转换
+            preds = model(images)    #模型调用
+            post_result = post_process_class(preds, shape_list)    #对模型输出张量的后处理
             boxes = post_result[0]['points']
-            # write result
+            # write result 写入json和可视化结果
             dt_boxes_json = []
             for box in boxes:
                 tmp_json = {"transcription": ""}
