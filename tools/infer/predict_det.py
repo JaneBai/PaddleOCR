@@ -65,7 +65,9 @@ class TextDetector(object):
             postprocess_params["max_candidates"] = 1000
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             postprocess_params["use_dilation"] = args.use_dilation
-            postprocess_params["score_mode"] = args.det_db_score_mode
+            if hasattr(args, "det_db_score_mode"):
+                postprocess_params["score_mode"] = args.det_db_score_mode
+
         elif self.det_algorithm == "EAST":
             postprocess_params['name'] = 'EASTPostProcess'
             postprocess_params["score_thresh"] = args.det_east_score_thresh
@@ -163,6 +165,7 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
         starttime = time.time()
+
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
