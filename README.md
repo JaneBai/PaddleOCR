@@ -9,7 +9,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 - Static graph: develop branch
 
 **Recent updates**
-- 2021.2.8 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
+- 2021.4.8 release end-to-end text recognition algorithm [PGNet](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) which is published in AAAI 2021. Find tutorial [here](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/pgnet_en.md)；release multi language recognition [models](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md), support more than 80 languages recognition; especically, the performance of [English recognition model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/models_list_en.md#English) is Optimized.
 - 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
@@ -33,7 +33,8 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 
 <div align="center">
     <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_01.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_02.jpg" width="800">
 </div>
 
 The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
@@ -43,7 +44,7 @@ The above pictures are the visualizations of the general ppocr_server model. For
 - Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 
@@ -79,7 +80,8 @@ For a new language request, please refer to [Guideline for new language_requests
 
 ## Tutorials
 - [Installation](./doc/doc_en/installation_en.md)
-- [Quick Start](./doc/doc_en/quickstart_en.md)
+- [Quick Start(Chinese)](./doc/doc_en/quickstart_en.md)
+- [Quick Start(English&Multi-languages)](./doc/doc_en/multi_languages_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - Algorithm Introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
@@ -95,7 +97,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./deploy/pdserving/README.md)
-    - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+    - [Mobile](./deploy/lite/readme_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
