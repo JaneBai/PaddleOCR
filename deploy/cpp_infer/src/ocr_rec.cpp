@@ -13,8 +13,7 @@
 // limitations under the License.
 
 #include <include/ocr_rec.h>
-#include "opencv2/opencv.hpp"
-#define Debug false
+
 namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
@@ -26,61 +25,24 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
-  vecStrAllResult.clear();
-  for (int i = boxes.size() - 1; i >= 0; i--) {
+  for (int i = 0; i < boxes.size(); i++) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
-	if (Debug)
-	{
-		cv::imwrite("Rec_1-GetRotateCropImage.bmp", crop_img);
-	}
+
     if (cls != nullptr) {
       crop_img = cls->Run(crop_img);
-	  if (Debug)
-	  {
-		  cv::imwrite("Rec_2-cls.bmp", crop_img);
-	  }
     }
+
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
     this->resize_op_.Run(crop_img, resize_img, wh_ratio, this->use_tensorrt_);
-	if (Debug)
-	{
-		cv::imwrite("Rec_3-resize.bmp", resize_img);
-	}
+
     this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                             this->is_scale_);
-	if (Debug)
-	{
-		cv::Mat resultMat = (resize_img + 1) * 255 / 2;
-		cv::Mat resultMat2;
-		resultMat.convertTo(resultMat2, CV_8U);
-		cv::imwrite("Rec_4-normalize.bmp", resultMat2);
-	/*	cv::FileStorage fs(".\\Rec_4-normalize.xml", cv::FileStorage::WRITE);
-		fs << "imageWidth" << resize_img.cols;
-		fs << "imageHeight" << resize_img.rows;
-		fs << "normalize" << resize_img;	
-		fs << "convertInt" << resultMat2;
-		fs.release();*/
-	}
+
     std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
 
     this->permute_op_.Run(&resize_img, input.data());
-	if (Debug)
-	{
-		std::vector<float> grayData(input.begin(), input.begin() + resize_img.rows * resize_img.cols);
 
-		/*cv::FileStorage fs(".\\Rec_5-permute_op.xml", cv::FileStorage::WRITE);
-		fs << "input" << input;
-		fs << "convert" << grayData;
-		fs.release();*/
-		cv::Mat temp = cv::Mat(grayData);
-		cv::Mat dest = temp.reshape(1, resize_img.rows).clone();
-		cv::Mat resultMat = (dest + 1) * 255 / 2;
-		cv::Mat resultMat2;
-		resultMat.convertTo(resultMat2, CV_8U);
-		cv::imwrite("Rec_5-permute_op_.bmp", resultMat2);
-		
-	}
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
@@ -100,8 +62,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     output_t->CopyToCpu(predict_batch.data());
 
     // ctc decode
-	std::vector<std::string> str_res;
-	std::string strSingleBoxCode="";
+    std::vector<std::string> str_res;
     int argmax_idx;
     int last_index = 0;
     float score = 0.f;
@@ -119,18 +80,15 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
       if (argmax_idx > 0 && (!(n > 0 && argmax_idx == last_index))) {
         score += max_value;
         count += 1;
-		std::string str = label_list_[argmax_idx];
         str_res.push_back(label_list_[argmax_idx]);
       }
       last_index = argmax_idx;
     }
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
-	  strSingleBoxCode += str_res[i];
       std::cout << str_res[i];
     }
-	vecStrAllResult.push_back(strSingleBoxCode);
-    std::cout << "\tscore: " << score << std::endl;	
+    std::cout << "\tscore: " << score << std::endl;
   }
 }
 

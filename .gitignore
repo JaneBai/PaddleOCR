@@ -25,10 +25,7 @@ output/
 build/
 dist/
 paddleocr.egg-info/
-test-byy.bat
-inference_results*
-VS2015
-VS2017
-paddle_inference_install_dir*
-*.zip
-*.rar
+/deploy/android_demo/app/OpenCV/
+/deploy/android_demo/app/PaddleLite/
+/deploy/android_demo/app/.cxx/
+/deploy/android_demo/app/cache/

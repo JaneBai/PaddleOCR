@@ -78,7 +78,7 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   int resize_h = int(float(h) * ratio);
   int resize_w = int(float(w) * ratio);
-
+  
   resize_h = max(int(round(float(resize_h) / 32) * 32), 32);
   resize_w = max(int(round(float(resize_w) / 32) * 32), 32);
 
