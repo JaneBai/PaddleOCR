@@ -9,7 +9,7 @@ use_mkldnn 0
 max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
-det_db_unclip_ratio  2.0
+det_db_unclip_ratio  1.8
 use_polygon_score 1
 det_model_dir  D:/4_code/GitHub_Open/PaddleOCR/inference/ch_ppocr_mobile_v2.0_det_infer/
 
@@ -23,7 +23,7 @@ rec_model_dir  D:/4_code/GitHub_Open/PaddleOCR/inference/ch_ppocr_mobile_v2.0_re
 char_list_file D:/4_code/GitHub_Open/PaddleOCR/ppocr/utils/ppocr_keys_v1.txt
 
 # show the detection results
-visualize 1
+visualize 0
 
 # use_tensorrt
 use_tensorrt 0

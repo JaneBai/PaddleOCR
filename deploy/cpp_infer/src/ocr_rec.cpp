@@ -22,7 +22,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
   img.copyTo(srcimg);
   cv::Mat crop_img;
   cv::Mat resize_img;
-
+  vecStrAllResult.clear();
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
   for (int i = 0; i < boxes.size(); i++) {
@@ -63,6 +63,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
     // ctc decode
     std::vector<std::string> str_res;
+	std::string strSingleBoxCode = "";
     int argmax_idx;
     int last_index = 0;
     float score = 0.f;
@@ -86,8 +87,10 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     }
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
+	  strSingleBoxCode += str_res[i];
       std::cout << str_res[i];
     }
+	vecStrAllResult.push_back(strSingleBoxCode);
     std::cout << "\tscore: " << score << std::endl;
   }
 }
