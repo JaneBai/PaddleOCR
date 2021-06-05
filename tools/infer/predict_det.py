@@ -167,6 +167,10 @@ class TextDetector(object):
         starttime = time.time()
 
         self.input_tensor.copy_from_cpu(img)
+        ##临时测试
+        #fs = cv2.FileStorage("d:\\temp\\int_p.yml", cv2.FILE_STORAGE_WRITE)      
+        #fs.write('input_data', img)   
+        #fs.release()
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:

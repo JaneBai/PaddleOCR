@@ -87,8 +87,8 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     }
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
-	  strSingleBoxCode += str_res[i];
-      std::cout << str_res[i];
+		strSingleBoxCode += str_res[i];
+		std::cout << str_res[i];
     }
 	vecStrAllResult.push_back(strSingleBoxCode);
     std::cout << "\tscore: " << score << std::endl;
@@ -109,6 +109,15 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 32, 10}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, 32, 2000}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 32, 320}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();

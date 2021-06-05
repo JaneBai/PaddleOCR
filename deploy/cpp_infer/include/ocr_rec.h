@@ -64,7 +64,8 @@ public:
 
   void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
            Classifier *cls);
-  std::vector<std::string> vecStrAllResult;
+  std::vector<std::string>vecStrAllResult;
+
 private:
   std::shared_ptr<Predictor> predictor_;
 

@@ -182,6 +182,14 @@ class DBPostProcess(object):
                     self.dilation_kernel)
             else:
                 mask = segmentation[batch_index]
+            ##临时测试 
+            #fs = cv2.FileStorage("d:\\temp\\output_p.yml", cv2.FILE_STORAGE_WRITE)      
+            #fs.write('out_data', pred)   
+            #fs.release()
+            #print("thresh:", self.thresh)
+            #cv2.imwrite("d:\\temp\\cbuf_map_p.bmp",pred)
+            #img2 = 255 * np.array(mask).astype('uint8')
+            #cv2.imwrite("d:\\temp\\dila_map_p.bmp",img2)
             boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
                                                    src_w, src_h)
 

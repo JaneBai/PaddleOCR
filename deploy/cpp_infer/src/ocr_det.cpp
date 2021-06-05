@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <include/ocr_det.h>
-#include "opencv2/opencv.hpp"
 
 namespace PaddleOCR {
 
@@ -31,6 +30,42 @@ void DBDetector::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 50, 50}},
+          {"conv2d_92.tmp_0", {1, 96, 20, 20}},
+          {"conv2d_91.tmp_0", {1, 96, 10, 10}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 10, 10}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 20, 20}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 20, 20}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 20, 20}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 20, 20}},
+          {"elementwise_add_7", {1, 56, 2, 2}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 2, 2}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, this->max_side_len_, this->max_side_len_}},
+          {"conv2d_92.tmp_0", {1, 96, 400, 400}},
+          {"conv2d_91.tmp_0", {1, 96, 200, 200}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 200, 200}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 400, 400}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 400, 400}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 400, 400}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 400, 400}},
+          {"elementwise_add_7", {1, 56, 400, 400}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 400, 400}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 640, 640}},
+          {"conv2d_92.tmp_0", {1, 96, 160, 160}},
+          {"conv2d_91.tmp_0", {1, 96, 80, 80}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 80, 80}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 160, 160}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 160, 160}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 160, 160}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 160, 160}},
+          {"elementwise_add_7", {1, 56, 40, 40}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 40, 40}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();
@@ -102,11 +137,6 @@ void DBDetector::Run(cv::Mat &img,
 
   cv::Mat cbuf_map(n2, n3, CV_8UC1, (unsigned char *)cbuf.data());
   cv::Mat pred_map(n2, n3, CV_32F, (float *)pred.data());
-  //
-  //cv::imshow("cbuf_map", cbuf_map);
-  //cvWaitKey(0);
-  //cv::imshow("pred_map", pred_map);
-  //cvWaitKey(0);
 
   const double threshold = this->det_db_thresh_ * 255;
   const double maxvalue = 255;
@@ -115,7 +145,6 @@ void DBDetector::Run(cv::Mat &img,
   cv::Mat dilation_map;
   cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
   cv::dilate(bit_map, dilation_map, dila_ele);
-  //dilation_map = bit_map;
   boxes = post_processor_.BoxesFromBitmap(
       pred_map, dilation_map, this->det_db_box_thresh_,
       this->det_db_unclip_ratio_, this->use_polygon_score_);
